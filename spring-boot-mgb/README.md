@@ -5,6 +5,8 @@
 1. 修改mybatis-generator.xml
 2. 创建maven goal : mybatis-generator:generate
 ![image_1bnipb0os1fil11negl11j2d1qb99.png-81.2kB][1]
+
+如果使用idea，右侧找到maven管理，直接运行plugins下的mybatis-generator:generate即可。
 3. 运行此goal
    
 [1]: http://static.zybuluo.com/swellwu/zsjapwrlzn9d1bn767mgrb3w/image_1bnipb0os1fil11negl11j2d1qb99.png

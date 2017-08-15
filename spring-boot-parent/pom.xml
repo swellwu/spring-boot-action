@@ -20,6 +20,7 @@ http://www.w3.org/2001/XMLSchema-instance ">
         <module>../spring-boot-helloworld</module>
         <module>../spring-boot-mail</module>
         <module>../spring-boot-mgb</module>
+        <module>../spring-boot-mbg-plugin</module>
     </modules>
 
     <name>spring-boot-parent</name>
