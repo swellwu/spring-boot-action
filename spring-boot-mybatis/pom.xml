@@ -27,10 +27,5 @@
             <artifactId>druid</artifactId>
             <version>1.0.20</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 </project>

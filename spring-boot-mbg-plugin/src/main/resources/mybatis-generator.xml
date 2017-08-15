@@ -47,14 +47,14 @@
 			<property name="enableSubPackages" value="true"/>
 			<property name="trimStrings" value="true"/>
 		</javaModelGenerator>
-		<!-- 数据访问对象接口: targetPackage：修改包名 targetProject：修改项目名 或 去除 -->
+		<!-- 数据访问对象xml实现:targetPackage：修改包名 targetProject：修改项目名 或 去除 -->
 		<sqlMapGenerator targetPackage="com.swellwu.mapper"
-						 targetProject="src/main/java">
+						 targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true"/>
 		</sqlMapGenerator>
-		<!-- 数据访问对象xml实现:targetPackage：修改包名 targetProject：修改项目名 或 去除 -->
+		<!-- 数据访问对象接口: targetPackage：修改包名 targetProject：修改项目名 或 去除 -->
 		<javaClientGenerator type="XMLMAPPER"
-							 targetPackage="com.swellwu.mapper" targetProject="src/main/resources">
+							 targetPackage="com.swellwu.mapper" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true"/>
 		</javaClientGenerator>
 		<!-- 表转代码：tableName：修改表名 -->
