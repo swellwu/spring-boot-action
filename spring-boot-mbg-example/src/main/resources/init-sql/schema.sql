@@ -13,5 +13,6 @@ CREATE TABLE `student` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `uuid` varchar(50) DEFAULT NULL COMMENT '唯一标识码',
+  `rank` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
