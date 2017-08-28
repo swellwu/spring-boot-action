@@ -9,3 +9,5 @@ spring-boot使用thymeleaf前端框架。
 @DateTimeFormat(pattern = "yyyy-MM-dd")
 ```
 如果用的@DateTimeFormat(pattern = "yyyy-MM-dd")，传输的是yyyy-MM-dd HH:mm:ss格式，则忽略时分秒。
+### 使用spring mvc 绑定
+@InitBinder绑定类型转换
