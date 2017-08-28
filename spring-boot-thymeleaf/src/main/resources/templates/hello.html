@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1 th:inline="text">hello</h1>
+<p th:text="${name}"></p>
+
+<div>
+    <form id="form-query" th:action="@{/hello}"
+          method="post" th:object="${vo}">
+        <div>
+            <span>当前时间：</span>
+            <p th:text="${#calendars.format(now,'yyyy-MM-dd HH:mm:ss')}"></p>
+        </div>
+        <div>
+            <span>时间1：</span>
+            <p th:if="${vo.time1}" th:text="${#calendars.format(vo.time1,'yyyy-MM-dd HH:mm:ss')}"></p>
+            <input th:field="*{time1}"/>
+        </div>
+        <div>
+            <span>时间2：</span>
+            <p th:if="${vo.time2}" th:text="${#calendars.format(vo.time2,'yyyy-MM-dd HH:mm:ss')}"></p>
+            <input th:field="*{time2}"/>
+        </div>
+        <div>
+            <button  type="submit">确定</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
