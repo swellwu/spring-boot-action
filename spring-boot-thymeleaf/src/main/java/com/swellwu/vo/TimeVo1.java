@@ -11,9 +11,7 @@ import java.util.Date;
  */
 public class TimeVo1 {
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date time1;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date time2;
 
     @Override
