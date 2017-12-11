@@ -12,6 +12,8 @@ import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.utils.mapper.JsonMapper;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,40 @@ public class RedisTest {
         redisTemplate.boundValueOps(stringKey).set(stringValue);
         Assert.assertEquals(stringValue, redisTemplate.boundValueOps(stringKey).get());
     }
+
+    @Test
+    public void test2() {
+        String key = "test";
+        ValueOperations<String, String> strOps = redisTemplate.opsForValue();
+        strOps.set(key, "hello");
+        Object rs = redisTemplate.execute(new SessionCallback() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                operations.watch(key);
+                String origin = (String) operations.opsForValue().get(key);
+                System.out.println(origin);
+                operations.multi();
+                operations.opsForValue().set("111", "111");
+                operations.opsForValue().set("222", "222");
+                Object rs = operations.exec();
+                return rs;
+            }
+        });
+        System.out.println(rs);
+    }
+
+    @Test
+    public void test3(){
+        Jedis jedis = new Jedis("127.0.0.1",6379);
+        String watch = jedis.watch("test");
+        System.out.println(Thread.currentThread().getName()+"--"+watch);
+        Transaction multi = jedis.multi();
+        multi.set("111", "111");
+        multi.set("222","222");
+        List<Object> exec = multi.exec();
+        System.out.println("--->>"+exec);
+    }
+
 
     /**
      * 用以测试redis事务
