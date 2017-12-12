@@ -1,5 +1,6 @@
 package com.swellwu.mapper;
 
+import com.github.pagehelper.PageHelper;
 import com.swellwu.enums.UserSexEnum;
 import com.swellwu.po.User;
 import org.junit.Assert;
@@ -38,12 +39,11 @@ public class UserMapperTest {
 
     @Test
     public void testQuery() throws Exception {
+        UserMapper.insert(new User("cc", "b123456", UserSexEnum.WOMAN));
+        UserMapper.insert(new User("cc", "b123456", UserSexEnum.WOMAN));
+        PageHelper.startPage(1,1);
         List<User> users = UserMapper.getAll();
-        if(users==null || users.size()==0){
-            System.out.println("is null");
-        }else{
-            System.out.println(users.toString());
-        }
+        Assert.assertEquals(1,users.size());
     }
 
     @Test
