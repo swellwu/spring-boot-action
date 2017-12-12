@@ -21,6 +21,7 @@ http://www.w3.org/2001/XMLSchema-instance ">
         <module>../spring-boot-mail</module>
         <module>../spring-boot-mgb</module>
         <module>../spring-boot-mbg-plugin</module>
+        <module>../spring-boot-mybatis</module>
         <module>../spring-boot-mybatis-redis</module>
         <module>../spring-boot-thymeleaf</module>
         <module>../spring-boot-quartz</module>
