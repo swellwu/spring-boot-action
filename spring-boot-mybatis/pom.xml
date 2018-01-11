@@ -15,6 +15,8 @@
     <properties>
         <mybatis-spring-boot>1.2.0</mybatis-spring-boot>
         <mysql-connector>5.1.43</mysql-connector>
+        <druid-version>1.1.6</druid-version>
+        <page-helper>1.1.1</page-helper>
     </properties>
 
     <dependencies>
@@ -28,5 +30,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector}</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${page-helper}</version>
+        </dependency>
+
     </dependencies>
 </project>
