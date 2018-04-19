@@ -9,14 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.utils.mapper.JsonMapper;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -66,15 +68,15 @@ public class RedisTest {
     }
 
     @Test
-    public void test3(){
-        Jedis jedis = new Jedis("127.0.0.1",6379);
+    public void test3() {
+        Jedis jedis = new Jedis("127.0.0.1", 6379);
         String watch = jedis.watch("test");
-        System.out.println(Thread.currentThread().getName()+"--"+watch);
+        System.out.println(Thread.currentThread().getName() + "--" + watch);
         Transaction multi = jedis.multi();
         multi.set("111", "111");
-        multi.set("222","222");
+        multi.set("222", "222");
         List<Object> exec = multi.exec();
-        System.out.println("--->>"+exec);
+        System.out.println("--->>" + exec);
     }
 
 
@@ -115,5 +117,75 @@ public class RedisTest {
         }
         pool.shutdown();
         pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+    }
+
+    @Test
+    public void redisScanTest() {
+        List<String> keys = keyScan(redisTemplate, "a*", 10);
+        int count = 0;
+        while (!keys.isEmpty()) {
+            count += keys.size();
+            for (String key : keys) {
+                redisTemplate.delete(key);
+            }
+            keys = keyScan(redisTemplate, "a*", 10);
+        }
+        System.out.println("count:" + count);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<String> keyScan(RedisTemplate redisTemplate, String pattern, int limit) {
+        List<String> list = new ArrayList<>();
+        RedisConnection redisConnection = null;
+        try {
+            redisConnection = redisTemplate.getConnectionFactory().getConnection();
+            ScanOptions options = ScanOptions.scanOptions().match(pattern).count(limit).build();
+            Cursor<byte[]> c = redisConnection.scan(options);
+            RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+            while (c.hasNext()) {
+                String key = redisSerializer.deserialize(c.next());
+                list.add(key);
+            }
+        } finally {
+            if (redisConnection != null) {
+                redisConnection.close();
+            }
+        }
+        return list;
+    }
+
+    @Test
+    public void redisGenerator() {
+        for (int i = 1; i < 100; ++i) {
+            String key = "a" + UUID.randomUUID().toString();
+            redisTemplate.boundValueOps(key).set(key, 10, TimeUnit.HOURS);
+        }
+    }
+
+    public static List<String> scan2(RedisTemplate redisTemplate, String pattern, int limit) {
+        List<String> list = new ArrayList<>();
+        RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+        redisTemplate.execute(new RedisCallback<Iterable<byte[]>>() {
+            @Override
+            public Iterable<byte[]> doInRedis(RedisConnection connection) throws DataAccessException {
+
+                List<byte[]> binaryKeys = new ArrayList<byte[]>();
+
+                Cursor<byte[]> cursor = connection.scan(ScanOptions.scanOptions().match(pattern).count(limit).build());
+                while (cursor.hasNext()) {
+                    String key = redisSerializer.deserialize(cursor.next());
+                    System.out.println(key);
+                    list.add(key);
+                }
+
+                try {
+                    cursor.close();
+                } catch (IOException e) {
+                    // do something meaningful
+                }
+                return binaryKeys;
+            }
+        });
+        return list;
     }
 }
