@@ -161,31 +161,4 @@ public class RedisTest {
             redisTemplate.boundValueOps(key).set(key, 10, TimeUnit.HOURS);
         }
     }
-
-    public static List<String> scan2(RedisTemplate redisTemplate, String pattern, int limit) {
-        List<String> list = new ArrayList<>();
-        RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-        redisTemplate.execute(new RedisCallback<Iterable<byte[]>>() {
-            @Override
-            public Iterable<byte[]> doInRedis(RedisConnection connection) throws DataAccessException {
-
-                List<byte[]> binaryKeys = new ArrayList<byte[]>();
-
-                Cursor<byte[]> cursor = connection.scan(ScanOptions.scanOptions().match(pattern).count(limit).build());
-                while (cursor.hasNext()) {
-                    String key = redisSerializer.deserialize(cursor.next());
-                    System.out.println(key);
-                    list.add(key);
-                }
-
-                try {
-                    cursor.close();
-                } catch (IOException e) {
-                    // do something meaningful
-                }
-                return binaryKeys;
-            }
-        });
-        return list;
-    }
 }
